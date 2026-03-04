@@ -5,6 +5,10 @@ function rotateHands(time) {
   var m = date.getMinutes();
   var s = date.getSeconds();
 
+  var secondsNearZero = s > 58 || s < 2;
+  var minutesNearFives = m % 5 == 0;
+  var secondsNearFifteens = s % 15;
+
   var hoursRotation = 30 * h + m / 2 + s / 120;
   var minutesRotation = 6 * m + s / 10;
   var secondsRotation = 6 * s;
@@ -13,9 +17,14 @@ function rotateHands(time) {
   var minutes = document.getElementById('analog-clock-hand-minutes');
   var seconds = document.getElementById('analog-clock-hand-seconds');
 
-  hours.style.transform = 'rotate(' + hoursRotation + 'deg)';
-  minutes.style.transform = 'rotate(' + minutesRotation + 'deg)';
   seconds.style.transform = 'rotate(' + secondsRotation + 'deg)';
+  if (!window.__analogClockHourRotated || secondsNearZero || secondsNearFifteens) {
+    minutes.style.transform = 'rotate(' + minutesRotation + 'deg)';
+    if(!window.__analogClockHourRotated ||minutesNearFives) {
+      hours.style.transform = 'rotate(' + hoursRotation + 'deg)';
+    }
+    window.__analogClockHourRotated = true;
+  }
 }
 
 // rotateHands();
