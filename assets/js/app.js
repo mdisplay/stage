@@ -81,7 +81,7 @@ function App() {
   }
   self.checkInternetJsonp = {
     jsonpCallback: 'checkInternet',
-    url: 'https://mdisplay.github.io/live/check-internet.js',
+    url: 'https://mdisplay.github.io/' + (isDevDebugging ? 'stage' : 'live') + '/check-internet.js',
     // url: ' http://192.168.1.58:8080/live/check-internet.js'
   };
 
