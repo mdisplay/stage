@@ -2,11 +2,11 @@
 // The code should only be authored in ES5
 // to support older generation Android TV boxes
 
-var isDevDebugging = true;
+var isDevDebugging = false;
 var isLocalhost = window.location.hostname == 'localhost' || window.location.hostname == '192.168.1.11' || window.location.hostname == localStorage.getItem('local-ip');
 
-if(!isLocalhost && window.location.href.indexOf('live') != -1) {
-  isDevDebugging = false;
+if(isLocalhost || window.location.href.indexOf('live') == -1) {
+  isDevDebugging = true;
 }
 
 var padZero = function padZero(number) {
@@ -81,7 +81,7 @@ function App() {
   }
   self.checkInternetJsonp = {
     jsonpCallback: 'checkInternet',
-    url: 'https://mdisplay.github.io/' + (isDevDebugging ? 'stage' : 'live') + '/check-internet.js',
+    url: 'https://mdisplay.github.io/live/check-internet.js',
     // url: ' http://192.168.1.58:8080/live/check-internet.js'
   };
 
@@ -107,8 +107,6 @@ function App() {
       versionString: '0.0.0',
       versionNumber: 0,
     },
-    isDevDebugging: isDevDebugging,
-    vStage: 1521,
     showSplash: true,
     // currentPrayerWaiting: false,
     // time: new Date(),
@@ -495,9 +493,7 @@ function App() {
             self.data.network.internetAvailable = true;
             if(response.v) {
               var newVersion = self.parseVersion(response.v);
-              if(isDevDebugging && response.vStage && self.data.vStage && response.vStage > self.data.vStage) {
-                self.appExpired();
-              } else if (newVersion && newVersion.versionNumber > self.data.appVersion.versionNumber) {
+              if (newVersion && newVersion.versionNumber > self.data.appVersion.versionNumber) {
                 self.appExpired();
               } else {
                 self.noUpdateAvailable = true;
@@ -1947,9 +1943,6 @@ function App() {
       }
       self.initShortcuts();
     });
-    if (isDevDebugging) {
-      self.data.appVersion.versionNumber = self.data.vStage;
-    }
   };
   self.parseVersion = function(fullVersion) {
     fullVersion = fullVersion.replace('?v=', '');

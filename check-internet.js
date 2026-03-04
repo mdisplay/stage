@@ -1,1 +1,1 @@
-checkInternet({ "result": "ok", "v": "?v=2.16.8-152", "vStage": 1521 });
+checkInternet({ "result": "ok", "v": "?v=2.16.8-152" });
