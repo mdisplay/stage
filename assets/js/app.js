@@ -107,7 +107,8 @@ function App() {
       versionString: '0.0.0',
       versionNumber: 0,
     },
-    stage: 1520,
+    isDevDebugging: isDevDebugging,
+    vStage: 1520,
     showSplash: true,
     // currentPrayerWaiting: false,
     // time: new Date(),
@@ -494,7 +495,7 @@ function App() {
             self.data.network.internetAvailable = true;
             if(response.v) {
               var newVersion = self.parseVersion(response.v);
-              if(isDevDebugging && response.stage && self.data.stage && response.stage > self.data.stage) {
+              if(isDevDebugging && response.vStage && self.data.vStage && response.vStage > self.data.vStage) {
                 self.appExpired();
               } else if (newVersion && newVersion.versionNumber > self.data.appVersion.versionNumber) {
                 self.appExpired();
@@ -1946,6 +1947,9 @@ function App() {
       }
       self.initShortcuts();
     });
+    if (isDevDebugging) {
+      self.data.appVersion.versionNumber = self.data.vStage;
+    }
   };
   self.parseVersion = function(fullVersion) {
     fullVersion = fullVersion.replace('?v=', '');
