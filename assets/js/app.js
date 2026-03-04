@@ -108,7 +108,7 @@ function App() {
       versionNumber: 0,
     },
     isDevDebugging: isDevDebugging,
-    vStage: 1520,
+    vStage: 1521,
     showSplash: true,
     // currentPrayerWaiting: false,
     // time: new Date(),
