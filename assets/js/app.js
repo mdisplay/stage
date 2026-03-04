@@ -2,7 +2,12 @@
 // The code should only be authored in ES5
 // to support older generation Android TV boxes
 
-var isDevDebugging = false;
+var isDevDebugging = true;
+var isLocalhost = window.location.hostname == 'localhost' || window.location.hostname == '192.168.1.11' || window.location.hostname == localStorage.getItem('local-ip');
+
+if(!isLocalhost && window.location.href.indexOf('live') != -1) {
+  isDevDebugging = false;
+}
 
 var padZero = function padZero(number) {
   number = parseInt(number);
@@ -102,6 +107,7 @@ function App() {
       versionString: '0.0.0',
       versionNumber: 0,
     },
+    stage: 1520,
     showSplash: true,
     // currentPrayerWaiting: false,
     // time: new Date(),
@@ -488,7 +494,9 @@ function App() {
             self.data.network.internetAvailable = true;
             if(response.v) {
               var newVersion = self.parseVersion(response.v);
-              if (newVersion && newVersion.versionNumber > self.data.appVersion.versionNumber) {
+              if(isDevDebugging && response.stage && self.data.stage && response.stage > self.data.stage) {
+                self.appExpired();
+              } else if (newVersion && newVersion.versionNumber > self.data.appVersion.versionNumber) {
                 self.appExpired();
               } else {
                 self.noUpdateAvailable = true;
